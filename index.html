@@ -89,13 +89,20 @@
 
         // Načtení významů karet ze souboru tarot_interpretations.json
         fetch('./tarot_interpretations.json')
-            .then(response => response.json())
-            .then(data => {
-                console.log("Data načtena:", data);
-    })
-    .catch(error => {
-        console.error('Chyba při načítání dat:', error);
-    });
+          .then(response => {
+            if (!response.ok) {
+               throw new Error(`Chyba při načítání: ${response.status}`);
+            }
+           return response.json();
+         })
+         .then(data => {
+           interpretations = data;
+           console.log("Interpretace načteny:", interpretations);
+          // Další kód pracující s načtenými daty
+          })
+         .catch(error => {
+            console.error("Chyba při načítání interpretací:", error);
+             });
                            
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {

@@ -88,7 +88,7 @@
         let interpretations = {};
 
         // Fetch interpretations from the WordPress page
-        fetch('https://github.com/Intuitivnitarot/Tarot/blob/ba1a109a2855e98ade6cf40d1969eda00d5bcb74/2tarot_interpretations.js')
+        fetch('tarot_interpretations.js')
             .then(response => response.text())
             .then(data => {
                 const parser = new DOMParser();

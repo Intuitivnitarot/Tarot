@@ -89,7 +89,7 @@
 
         // Načtení významů karet ze souboru tarot_interpretations.js
         fetch('tarot_interpretations.js')
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
                 console.log("Data načtena:", data);
     })

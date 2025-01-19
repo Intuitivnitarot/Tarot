@@ -5,36 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intuitivní Tarot</title>
     <style>
-        /* Váš existující CSS kód */
+        /* Styl karet a rozvržení */
     </style>
 </head>
 <body>
     <h1>Intuitivní Tarot</h1>
     <p>Zadejte svou otázku, zamíchejte karty a objevte svou odpověď.</p>
     <textarea id="question" rows="3" cols="40" placeholder="Zadejte svou otázku..."></textarea>
-    <div id="shuffling-message" class="hidden shuffling">Míchání karet...</div>
-    <div class="tarot-container">
-        <div id="card-layout"></div>
-    </div>
+    <div id="shuffling-message" class="hidden">Míchání karet...</div>
+    <div id="card-layout"></div>
     <button onclick="shuffleAndDrawCards()">Zamíchat karty</button>
 
     <div id="result" class="hidden">
         <h2>Vaše vytažené karty</h2>
-        <h3>Interpretace</h3>
-        <p id="interpretation"></p>
-        <h3>Odpověď na vaši otázku</h3>
-        <p id="answer"></p>
-        <h3>Doporučení</h3>
-        <p id="recommendation"></p>
+        <div id="interpretation"></div>
+        <div id="answer"></div>
+        <div id="recommendation"></div>
     </div>
 
-    <script src="tarot_interpretations.json"></script>
     <script>
         const tarotDeck = [
             "Blázen", "Mág", "Velekněžka", "Císařovna", "Císař", "Velekněz", "Zamilovaní", "Vůz",
             "Síla", "Poustevník", "Kolo štěstí", "Spravedlnost", "Viselec", "Smrt", "Mírnost", "Ďábel",
-            "Věž", "Hvězda", "Měsíc", "Slunce", "Soud", "Svět"
+            "Věž", "Hvězda", "Měsíc", "Slunce", "Soud", "Svět",
+            "Eso pohárů", "Dva II poháry", "Tři III poháry", "Čtyři IV poháry", "Pět V poháry",
+            "Šest VI poháry", "Sedm VII poháry", "Osm VIII poháry", "Devět IX poháry", "Deset X pohárů",
+            "Páže pohárů", "Rytíř pohárů", "Královna pohárů", "Král pohárů"
         ];
+
+        let interpretations = {};
+
+        // Načtení interpretací z JSON souboru
+        fetch('tarot_interpretations.json')
+            .then(response => response.json())
+            .then(data => {
+                interpretations = data;
+                console.log("Interpretace načteny:", interpretations);
+            })
+            .catch(error => {
+                console.error("Chyba při načítání interpretací:", error);
+            });
 
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -53,19 +63,14 @@
             shuffleArray(tarotDeck);
             const selectedCards = tarotDeck.slice(0, 3);
 
-            const cardLayout = document.getElementById("card-layout");
-            cardLayout.innerHTML = selectedCards.map(card => `<div class="tarot-card">${card}</div>`).join("");
+            const interpretationHtml = selectedCards
+                .map(card => `<p><strong>${card}:</strong> ${interpretations[card] || "Význam není dostupný."}</p>`)
+                .join("");
 
-            const interpretation = selectedCards
-                .map(card => `<strong>${card}:</strong> ${tarotInterpretations[card] || "Význam není dostupný."}`)
-                .join("<br>");
-            document.getElementById("interpretation").innerHTML = interpretation;
-
-            const answer = `Odpověď na vaši otázku: ${selectedCards[0]} - ${tarotInterpretations[selectedCards[0]] || "Význam není dostupný."}`;
-            document.getElementById("answer").innerHTML = answer;
-
-            const recommendation = `Doporučení: ${selectedCards[selectedCards.length - 1]} - ${tarotInterpretations[selectedCards[selectedCards.length - 1]] || "Význam není dostupný."}`;
-            document.getElementById("recommendation").innerHTML = recommendation;
+            document.getElementById("card-layout").innerHTML = selectedCards.map(card => `<div>${card}</div>`).join("");
+            document.getElementById("interpretation").innerHTML = interpretationHtml;
+            document.getElementById("answer").innerHTML = `Odpověď na vaši otázku: ${selectedCards[0]}`;
+            document.getElementById("recommendation").innerHTML = `Doporučení: Zamyslete se nad významem karty ${selectedCards[2]}.`;
 
             document.getElementById("result").classList.remove("hidden");
         }

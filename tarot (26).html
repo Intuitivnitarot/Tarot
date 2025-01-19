@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intuitivní Tarot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .tarot-container {
+            margin: 20px 0;
+        }
+        .tarot-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .tarot-card {
+            width: 80px;
+            height: 140px;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: url('http://www.mihi-kosmetika.cz/wp-content/uploads/2025/01/Green-Snow-Merry-Christmas-Card.jpg') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px black;
+        }
+        .hidden {
+            display: none;
+        }
+        .shuffling {
+            font-size: 18px;
+            font-weight: bold;
+            color: #444;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Intuitivní Tarot</h1>
+    <p>Zadejte svou otázku, zamíchejte karty a objevte svou odpověď.</p>
+    <textarea id="question" rows="3" cols="40" placeholder="Zadejte svou otázku..."></textarea>
+    <div id="shuffling-message" class="hidden shuffling">Míchání karet...</div>
+    <div class="tarot-container">
+        <div class="tarot-row">
+            <div class="tarot-card">?</div>
+            <div class="tarot-card">?</div>
+            <div class="tarot-card">?</div>
+        </div>
+    </div>
+    <button onclick="shuffleAndDrawCards()">Zamíchat karty</button>
+
+    <div id="result" class="hidden">
+        <h2>Vaše vytažené karty</h2>
+        <div id="card-layout"></div>
+        <h3>Interpretace</h3>
+        <p id="interpretation"></p>
+        <h3>Odpověď na vaši otázku</h3>
+        <p id="answer"></p>
+        <h3>Doporučení</h3>
+        <p id="recommendation"></p>
+    </div>
+
+    <script>
+        const tarotDeck = [
+            "Blázen", "Mág", "Velekněžka", "Císařovna", "Císař", "Velekněz", "Zamilovaní", "Vůz",
+            "Síla", "Poustevník", "Kolo štěstí", "Spravedlnost", "Viselec", "Smrt", "Mírnost", "Ďábel",
+            "Věž", "Hvězda", "Měsíc", "Slunce", "Soud", "Svět",
+            "Eso pohárů", "Dva II poháry", "Tři III poháry", "Čtyři IV poháry", "Pět V poháry", "Šest VI poháry", "Sedm VII poháry", "Osm VIII poháry",
+            "Devět IX poháry", "Deset X poháry", "Páže pohárů", "Rytíř pohárů", "Královna pohárů", "Král pohárů",
+            "Eso holí", "Dva II hole", "Tři III hole", "Čtyři IV hole", "Pět V holí", "Šest VI holí", "Sedm VII holí", "Osm VIII holí",
+            "Devět IX holí", "Deset X holí", "Páže holí", "Rytíř holí", "Královna holí", "Král holí",
+            "Eso mečů", "Dva II meče", "Tři III meče", "Čtyři IV meče", "Pět V mečů", "Šest VI mečů", "Sedm VII mečů", "Osm VIII mečů",
+            "Devět IX mečů", "Deset X mečů", "Páže mečů", "Rytíř mečů", "Královna mečů", "Král mečů",
+            "Eso pentaklů", "Dva II pentakly", "Tři III pentakly", "Čtyři IV pentakly", "Pět V pentaklů", "Šest VI pentaklů", "Sedm VII pentaklů", "Osm VIII pentaklů",
+            "Devět IX pentaklů", "Deset X pentaklů", "Páže pentaklů", "Rytíř pentaklů", "Královna pentaklů", "Král pentaklů"
+        ];
+
+        let interpretations = {};
+
+        // Fetch interpretations from the WordPress page
+        fetch('https://www.greenway-shop.cz/vyznamy-karet/')
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const content = doc.querySelector('body').textContent.trim();
+                try {
+                    interpretations = JSON.parse(content);
+                    console.log("Významy načteny:", interpretations);
+                } catch (error) {
+                    console.error("Chyba při zpracování JSON dat:", error);
+                    alert("Chyba: Významy karet nebyly načteny správně.");
+                }
+            })
+            .catch(error => {
+                console.error('Chyba při načítání významů:', error);
+                alert("Chyba: Nelze načíst významy karet. Zkontrolujte připojení nebo správnost zdroje.");
+            });
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function displayShufflingMessage() {
+            const message = document.getElementById("shuffling-message");
+            message.classList.remove("hidden");
+            setTimeout(() => message.classList.add("hidden"), 2000);
+        }
+
+        function shuffleAndDrawCards() {
+            displayShufflingMessage();
+            setTimeout(() => {
+                const question = document.getElementById("question").value.trim();
+                if (!question) {
+                    alert("Prosím, zadejte svou otázku.");
+                    return;
+                }
+
+                shuffleArray(tarotDeck);
+                const selectedCards = tarotDeck.slice(0, 12);
+
+                const cardLayout = document.getElementById("card-layout");
+                cardLayout.innerHTML = "";
+
+                for (let i = 0; i < 3; i++) {
+                    const rowDiv = document.createElement("div");
+                    rowDiv.className = "tarot-row";
+
+                    for (let j = 0; j < 4; j++) {
+                        const cardDiv = document.createElement("div");
+                        cardDiv.className = "tarot-card";
+                        cardDiv.textContent = selectedCards[i * 4 + j];
+                        rowDiv.appendChild(cardDiv);
+                    }
+
+                    cardLayout.appendChild(rowDiv);
+                }
+
+                const interpretation = selectedCards.map(card => `<strong>${card}:</strong> ${interpretations[card] || "Význam není dostupný."}`).join("<br>");
+                const answer = "Odpověď na vaši otázku je ve vašich rukách. Postupujte s důvěrou a intuicí.";
+                const recommendation = "Doporučujeme důkladně zvážit své kroky a využít získané poznatky.";
+
+                document.getElementById("interpretation").innerHTML = interpretation;
+                document.getElementById("answer").innerHTML = answer;
+                document.getElementById("recommendation").innerHTML = recommendation;
+                document.getElementById("result").classList.remove("hidden");
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

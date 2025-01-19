@@ -6,12 +6,12 @@
     <title>Intuitivní Tarot</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Verdana, sans-serif;
             text-align: center;
-            margin: 20px;
+            margin: 30px;
         }
         .tarot-container {
-            margin: 20px 0;
+            margin: 30px 0;
         }
         .tarot-row {
             display: flex;
@@ -69,7 +69,8 @@
         <h3>Doporučení</h3>
         <p id="recommendation"></p>
     </div>
-
+    
+    <script src="tarot_interpretations.js"></script>
     <script>
         const tarotDeck = [
             "Blázen", "Mág", "Velekněžka", "Císařovna", "Císař", "Velekněz", "Zamilovaní", "Vůz",
@@ -85,17 +86,6 @@
             "Devět IX pentaklů", "Deset X pentaklů", "Páže pentaklů", "Rytíř pentaklů", "Královna pentaklů", "Král pentaklů"
         ];
 
-        let interpretations = {};
-
-        // Načtení významů karet ze souboru tarot_interpretations.js
-        fetch('tarot_interpretations.js')
-            .then(response => response.json())
-            .then(data => {
-                console.log("Data načtena:", data);
-    })
-    .catch(error => {
-        console.error('Chyba při načítání dat:', error);
-    });
                            
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -104,50 +94,21 @@
             }
         }
 
-        function displayShufflingMessage() {
-            const message = document.getElementById("shuffling-message");
-            message.classList.remove("hidden");
-            setTimeout(() => message.classList.add("hidden"), 2000);
-        }
-
         function shuffleAndDrawCards() {
-            displayShufflingMessage();
-            setTimeout(() => {
-                const question = document.getElementById("question").value.trim();
-                if (!question) {
-                    alert("Prosím, zadejte svou otázku.");
-                    return;
-                }
+            const question = document.getElementById("question").value.trim();
+            if (!question) {
+                alert("Prosím, zadejte svou otázku.");
+                return;
+            }
 
-                shuffleArray(tarotDeck);
-                const selectedCards = tarotDeck.slice(0, 12);
+            shuffleArray(tarotDeck);
+            const selectedCards = tarotDeck.slice(0, 3);
 
-                const cardLayout = document.getElementById("card-layout");
-                cardLayout.innerHTML = "";
+            const cardLayout = document.getElementById("card-layout");
+            cardLayout.innerHTML = selectedCards.map(card => `<div class="tarot-card">${card}</div>`).join("");
 
-                for (let i = 0; i < 3; i++) {
-                    const rowDiv = document.createElement("div");
-                    rowDiv.className = "tarot-row";
-
-                    for (let j = 0; j < 4; j++) {
-                        const cardDiv = document.createElement("div");
-                        cardDiv.className = "tarot-card";
-                        cardDiv.textContent = selectedCards[i * 4 + j];
-                        rowDiv.appendChild(cardDiv);
-                    }
-
-                    cardLayout.appendChild(rowDiv);
-                }
-
-                const interpretation = selectedCards.map(card => `<strong>${card}:</strong> ${interpretations[card] || "Význam není dostupný."}`).join("<br>");
-                const answer = "Odpověď na vaši otázku je ve vašich rukách. Postupujte s důvěrou a intuicí.";
-                const recommendation = "Doporučujeme důkladně zvážit své kroky a využít získané poznatky.";
-
-                document.getElementById("interpretation").innerHTML = interpretation;
-                document.getElementById("answer").innerHTML = answer;
-                document.getElementById("recommendation").innerHTML = recommendation;
-                document.getElementById("result").classList.remove("hidden");
-            }, 2000);
+            const interpretation = selectedCards.map(card => `<strong>${card}:</strong> ${tarotInterpretations[card] || "Význam není dostupný."}`).join("<br>");
+            document.getElementById("interpretation").innerHTML = interpretation;
         }
     </script>
 </body>

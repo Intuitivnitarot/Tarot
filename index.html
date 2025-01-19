@@ -5,22 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intuitivní Tarot</title>
     <style>
-        /* Styl karet a rozvržení */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .tarot-container {
+            margin: 20px 0;
+        }
+        .tarot-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .tarot-card {
+            width: 80px;
+            height: 140px;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: url('uobrazekkartyjpg') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px black;
+        }
+        .hidden {
+            display: none;
+        }
+        .shuffling {
+            font-size: 18px;
+            font-weight: bold;
+            color: #444;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
     <h1>Intuitivní Tarot</h1>
     <p>Zadejte svou otázku, zamíchejte karty a objevte svou odpověď.</p>
     <textarea id="question" rows="3" cols="40" placeholder="Zadejte svou otázku..."></textarea>
-    <div id="shuffling-message" class="hidden">Míchání karet...</div>
-    <div id="card-layout"></div>
+    <div id="shuffling-message" class="hidden shuffling">Míchání karet...</div>
+    <div class="tarot-container">
+        <div class="tarot-row">
+            <div class="tarot-card">?</div>
+            <div class="tarot-card">?</div>
+            <div class="tarot-card">?</div>
+        </div>
+    </div>
     <button onclick="shuffleAndDrawCards()">Zamíchat karty</button>
 
     <div id="result" class="hidden">
         <h2>Vaše vytažené karty</h2>
-        <div id="interpretation"></div>
-        <div id="answer"></div>
-        <div id="recommendation"></div>
+        <div id="card-layout"></div>
+        <h3>Interpretace</h3>
+        <p id="interpretation"></p>
+        <h3>Odpověď na vaši otázku</h3>
+        <p id="answer"></p>
+        <h3>Doporučení</h3>
+        <p id="recommendation"></p>
     </div>
 
     <script>
@@ -28,24 +75,28 @@
             "Blázen", "Mág", "Velekněžka", "Císařovna", "Císař", "Velekněz", "Zamilovaní", "Vůz",
             "Síla", "Poustevník", "Kolo štěstí", "Spravedlnost", "Viselec", "Smrt", "Mírnost", "Ďábel",
             "Věž", "Hvězda", "Měsíc", "Slunce", "Soud", "Svět",
-            "Eso pohárů", "Dva II poháry", "Tři III poháry", "Čtyři IV poháry", "Pět V poháry",
-            "Šest VI poháry", "Sedm VII poháry", "Osm VIII poháry", "Devět IX poháry", "Deset X pohárů",
-            "Páže pohárů", "Rytíř pohárů", "Královna pohárů", "Král pohárů"
+            "Eso pohárů", "Dva II poháry", "Tři III poháry", "Čtyři IV poháry", "Pět V poháry", "Šest VI poháry", "Sedm VII poháry", "Osm VIII poháry",
+            "Devět IX poháry", "Deset X poháry", "Páže pohárů", "Rytíř pohárů", "Královna pohárů", "Král pohárů",
+            "Eso holí", "Dva II hole", "Tři III hole", "Čtyři IV hole", "Pět V holí", "Šest VI holí", "Sedm VII holí", "Osm VIII holí",
+            "Devět IX holí", "Deset X holí", "Páže holí", "Rytíř holí", "Královna holí", "Král holí",
+            "Eso mečů", "Dva II meče", "Tři III meče", "Čtyři IV meče", "Pět V mečů", "Šest VI mečů", "Sedm VII mečů", "Osm VIII mečů",
+            "Devět IX mečů", "Deset X mečů", "Páže mečů", "Rytíř mečů", "Královna mečů", "Král mečů",
+            "Eso pentaklů", "Dva II pentakly", "Tři III pentakly", "Čtyři IV pentakly", "Pět V pentaklů", "Šest VI pentaklů", "Sedm VII pentaklů", "Osm VIII pentaklů",
+            "Devět IX pentaklů", "Deset X pentaklů", "Páže pentaklů", "Rytíř pentaklů", "Královna pentaklů", "Král pentaklů"
         ];
 
         let interpretations = {};
 
-        // Načtení interpretací z JSON souboru
-        fetch('tarot_interpretations.json')
+        // Načtení významů karet ze souboru tarot_interpretations.js
+        fetch('tarot_interpretations.js')
             .then(response => response.json())
             .then(data => {
-                interpretations = data;
-                console.log("Interpretace načteny:", interpretations);
-            })
-            .catch(error => {
-                console.error("Chyba při načítání interpretací:", error);
-            });
-
+                console.log("Data načtena:", data);
+    })
+    .catch(error => {
+        console.error('Chyba při načítání dat:', error);
+    });
+                           
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -53,26 +104,50 @@
             }
         }
 
+        function displayShufflingMessage() {
+            const message = document.getElementById("shuffling-message");
+            message.classList.remove("hidden");
+            setTimeout(() => message.classList.add("hidden"), 2000);
+        }
+
         function shuffleAndDrawCards() {
-            const question = document.getElementById("question").value.trim();
-            if (!question) {
-                alert("Prosím, zadejte svou otázku.");
-                return;
-            }
+            displayShufflingMessage();
+            setTimeout(() => {
+                const question = document.getElementById("question").value.trim();
+                if (!question) {
+                    alert("Prosím, zadejte svou otázku.");
+                    return;
+                }
 
-            shuffleArray(tarotDeck);
-            const selectedCards = tarotDeck.slice(0, 3);
+                shuffleArray(tarotDeck);
+                const selectedCards = tarotDeck.slice(0, 12);
 
-            const interpretationHtml = selectedCards
-                .map(card => `<p><strong>${card}:</strong> ${interpretations[card] || "Význam není dostupný."}</p>`)
-                .join("");
+                const cardLayout = document.getElementById("card-layout");
+                cardLayout.innerHTML = "";
 
-            document.getElementById("card-layout").innerHTML = selectedCards.map(card => `<div>${card}</div>`).join("");
-            document.getElementById("interpretation").innerHTML = interpretationHtml;
-            document.getElementById("answer").innerHTML = `Odpověď na vaši otázku: ${selectedCards[0]}`;
-            document.getElementById("recommendation").innerHTML = `Doporučení: Zamyslete se nad významem karty ${selectedCards[2]}.`;
+                for (let i = 0; i < 3; i++) {
+                    const rowDiv = document.createElement("div");
+                    rowDiv.className = "tarot-row";
 
-            document.getElementById("result").classList.remove("hidden");
+                    for (let j = 0; j < 4; j++) {
+                        const cardDiv = document.createElement("div");
+                        cardDiv.className = "tarot-card";
+                        cardDiv.textContent = selectedCards[i * 4 + j];
+                        rowDiv.appendChild(cardDiv);
+                    }
+
+                    cardLayout.appendChild(rowDiv);
+                }
+
+                const interpretation = selectedCards.map(card => `<strong>${card}:</strong> ${interpretations[card] || "Význam není dostupný."}`).join("<br>");
+                const answer = "Odpověď na vaši otázku je ve vašich rukách. Postupujte s důvěrou a intuicí.";
+                const recommendation = "Doporučujeme důkladně zvážit své kroky a využít získané poznatky.";
+
+                document.getElementById("interpretation").innerHTML = interpretation;
+                document.getElementById("answer").innerHTML = answer;
+                document.getElementById("recommendation").innerHTML = recommendation;
+                document.getElementById("result").classList.remove("hidden");
+            }, 2000);
         }
     </script>
 </body>

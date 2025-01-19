@@ -1,5 +1,4 @@
-
-const tarotInterpretations = {
+{
     "Blázen": "Blázen symbolizuje nové začátky, potenciál a svobodu.",
     "Mág": "Mág je karta síly vůle, tvořivosti a schopností.",
     "Velekněžka": "Velekněžka reprezentuje intuici, tajemství a duchovní poznání.",
@@ -36,4 +35,4 @@ const tarotInterpretations = {
     "Rytíř pohárů": "Romantika, nabídka lásky, hledání snů, něžnost.",
     "Královna pohárů": "Empatie, péče, intuice, emocionální moudrost.",
     "Král pohárů": "Rovnováha mezi emocemi a rozumem, laskavost, moudrost."
-};
+}

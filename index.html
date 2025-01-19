@@ -5,44 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intuitivní Tarot</title>
     <style>
-        body {
-            font-family: Verdana, sans-serif;
-            text-align: center;
-            margin: 30px;
-        }
-        .tarot-container {
-            margin: 30px 0;
-        }
-        .tarot-row {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-        .tarot-card {
-            width: 80px;
-            height: 140px;
-            margin: 0 5px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background: url('uobrazekkartyjpg') no-repeat center center;
-            background-size: cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: bold;
-            color: white;
-            text-shadow: 1px 1px 2px black;
-        }
-        .hidden {
-            display: none;
-        }
-        .shuffling {
-            font-size: 18px;
-            font-weight: bold;
-            color: #444;
-            margin: 20px 0;
-        }
+        /* Váš existující CSS kód */
     </style>
 </head>
 <body>
@@ -51,17 +14,12 @@
     <textarea id="question" rows="3" cols="40" placeholder="Zadejte svou otázku..."></textarea>
     <div id="shuffling-message" class="hidden shuffling">Míchání karet...</div>
     <div class="tarot-container">
-        <div class="tarot-row">
-            <div class="tarot-card">?</div>
-            <div class="tarot-card">?</div>
-            <div class="tarot-card">?</div>
-        </div>
+        <div id="card-layout"></div>
     </div>
     <button onclick="shuffleAndDrawCards()">Zamíchat karty</button>
 
     <div id="result" class="hidden">
         <h2>Vaše vytažené karty</h2>
-        <div id="card-layout"></div>
         <h3>Interpretace</h3>
         <p id="interpretation"></p>
         <h3>Odpověď na vaši otázku</h3>
@@ -69,24 +27,15 @@
         <h3>Doporučení</h3>
         <p id="recommendation"></p>
     </div>
-    
+
     <script src="tarot_interpretations.js"></script>
     <script>
         const tarotDeck = [
             "Blázen", "Mág", "Velekněžka", "Císařovna", "Císař", "Velekněz", "Zamilovaní", "Vůz",
             "Síla", "Poustevník", "Kolo štěstí", "Spravedlnost", "Viselec", "Smrt", "Mírnost", "Ďábel",
-            "Věž", "Hvězda", "Měsíc", "Slunce", "Soud", "Svět",
-            "Eso pohárů", "Dva II poháry", "Tři III poháry", "Čtyři IV poháry", "Pět V poháry", "Šest VI poháry", "Sedm VII poháry", "Osm VIII poháry",
-            "Devět IX poháry", "Deset X poháry", "Páže pohárů", "Rytíř pohárů", "Královna pohárů", "Král pohárů",
-            "Eso holí", "Dva II hole", "Tři III hole", "Čtyři IV hole", "Pět V holí", "Šest VI holí", "Sedm VII holí", "Osm VIII holí",
-            "Devět IX holí", "Deset X holí", "Páže holí", "Rytíř holí", "Královna holí", "Král holí",
-            "Eso mečů", "Dva II meče", "Tři III meče", "Čtyři IV meče", "Pět V mečů", "Šest VI mečů", "Sedm VII mečů", "Osm VIII mečů",
-            "Devět IX mečů", "Deset X mečů", "Páže mečů", "Rytíř mečů", "Královna mečů", "Král mečů",
-            "Eso pentaklů", "Dva II pentakly", "Tři III pentakly", "Čtyři IV pentakly", "Pět V pentaklů", "Šest VI pentaklů", "Sedm VII pentaklů", "Osm VIII pentaklů",
-            "Devět IX pentaklů", "Deset X pentaklů", "Páže pentaklů", "Rytíř pentaklů", "Královna pentaklů", "Král pentaklů"
+            "Věž", "Hvězda", "Měsíc", "Slunce", "Soud", "Svět"
         ];
 
-                           
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -107,8 +56,18 @@
             const cardLayout = document.getElementById("card-layout");
             cardLayout.innerHTML = selectedCards.map(card => `<div class="tarot-card">${card}</div>`).join("");
 
-            const interpretation = selectedCards.map(card => `<strong>${card}:</strong> ${tarotInterpretations[card] || "Význam není dostupný."}`).join("<br>");
+            const interpretation = selectedCards
+                .map(card => `<strong>${card}:</strong> ${tarotInterpretations[card] || "Význam není dostupný."}`)
+                .join("<br>");
             document.getElementById("interpretation").innerHTML = interpretation;
+
+            const answer = `Odpověď na vaši otázku: ${selectedCards[0]} - ${tarotInterpretations[selectedCards[0]] || "Význam není dostupný."}`;
+            document.getElementById("answer").innerHTML = answer;
+
+            const recommendation = `Doporučení: ${selectedCards[selectedCards.length - 1]} - ${tarotInterpretations[selectedCards[selectedCards.length - 1]] || "Význam není dostupný."}`;
+            document.getElementById("recommendation").innerHTML = recommendation;
+
+            document.getElementById("result").classList.remove("hidden");
         }
     </script>
 </body>

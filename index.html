@@ -91,16 +91,11 @@
         fetch('tarot_interpretations.js')
             .then(response => response.text())
             .then(data => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(data, 'text/html');
-                const content = doc.querySelector('body').textContent.trim();
-                try {
-                    interpretations = JSON.parse(content);
-                    console.log("Významy načteny:", interpretations);
-                } catch (error) {
-                    console.error("Chyba při zpracování JSON dat:", error);
-                    alert("Chyba: Významy karet nebyly načteny správně.");
-                }
+                console.log("Data načtena:", data);
+    })
+    .catch(error => {
+        console.error('Chyba při načítání dat:', error);
+    });
             })
             .catch(error => {
                 console.error('Chyba při načítání významů:', error);

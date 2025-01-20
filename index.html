@@ -6,7 +6,7 @@
     <title>Intuitivní Tarot</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Verdana, sans-serif;
             text-align: center;
             margin: 20px;
         }
@@ -70,40 +70,26 @@
         <p id="recommendation"></p>
     </div>
 
-    <script>
-        const tarotDeck = [
-            "Blázen", "Mág", "Velekněžka", "Císařovna", "Císař", "Velekněz", "Zamilovaní", "Vůz",
-            "Síla", "Poustevník", "Kolo štěstí", "Spravedlnost", "Viselec", "Smrt", "Mírnost", "Ďábel",
-            "Věž", "Hvězda", "Měsíc", "Slunce", "Soud", "Svět",
-            "Eso pohárů", "Dva II poháry", "III poháry", "Čtyři IV poháry", "Pět V poháry", "Šest VI poháry", "Sedm VII poháry", "Osm VIII poháry",
-            "Devět IX poháry", "Deset X poháry", "Páže pohárů", "Rytíř pohárů", "Královna pohárů", "Král pohárů",
-            "Eso holí", "Dva II hole", "Tři III hole", "Čtyři IV hole", "Pět V holí", "Šest VI holí", "Sedm VII holí", "Osm VIII holí",
-            "Devět IX holí", "Deset X holí", "Páže holí", "Rytíř holí", "Královna holí", "Král holí",
-            "Eso mečů", "Dva II meče", "Tři III meče", "Čtyři IV meče", "Pět V mečů", "Šest VI mečů", "Sedm VII mečů", "Osm VIII mečů",
-            "Devět IX mečů", "Deset X mečů", "Páže mečů", "Rytíř mečů", "Královna mečů", "Král mečů",
-            "Eso pentaklů", "Dva II pentakly", "Tři III pentakly", "Čtyři IV pentakly", "Pět V pentaklů", "Šest VI pentaklů", "Sedm VII pentaklů", "Osm VIII pentaklů",
-            "Devět IX pentaklů", "Deset X pentaklů", "Páže pentaklů", "Rytíř pentaklů", "Královna pentaklů", "Král pentaklů"
-        ];
+  <script>
+        let tarotDeck = [];
+        let drawnCards = [];
 
-        let interpretations = {};
-<script>
-        // Načtení významů karet ze souboru tarot_interpretations.json
+        // Načtení dat ze souboru JSON
         fetch('./tarot_interpretations.json')
-          .then(response => {
-            if (!response.ok) {
-               throw new Error(`Chyba při načítání: ${response.status}`);
-            }
-           return response.json();
-         })
-         .then(data => {
-           interpretations = data;
-           console.log("Interpretace načteny:", interpretations);
-          // Další kód pracující s načtenými daty
-          })
-         .catch(error => {
-            console.error("Chyba při načítání interpretací:", error);
-             });
-                           
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Chyba při načítání: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                tarotDeck = data.cards;
+                console.log("Karty načteny:", tarotDeck);
+            })
+            .catch(error => {
+                console.error("Chyba při načítání dat:", error);
+            });
+
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -127,26 +113,22 @@
                 }
 
                 shuffleArray(tarotDeck);
-                const selectedCards = tarotDeck.slice(0, 12);
+                drawnCards = tarotDeck.slice(0, 3);
 
                 const cardLayout = document.getElementById("card-layout");
                 cardLayout.innerHTML = "";
 
-                for (let i = 0; i < 3; i++) {
-                    const rowDiv = document.createElement("div");
-                    rowDiv.className = "tarot-row";
+                drawnCards.forEach(card => {
+                    const cardDiv = document.createElement("div");
+                    cardDiv.className = "tarot-card";
+                    cardDiv.textContent = card.name;
+                    cardLayout.appendChild(cardDiv);
+                });
 
-                    for (let j = 0; j < 4; j++) {
-                        const cardDiv = document.createElement("div");
-                        cardDiv.className = "tarot-card";
-                        cardDiv.textContent = selectedCards[i * 4 + j];
-                        rowDiv.appendChild(cardDiv);
-                    }
+                const interpretation = drawnCards.map(card => `
+                    <strong>${card.name}:</strong> ${card.meaning}
+                `).join("<br>");
 
-                    cardLayout.appendChild(rowDiv);
-                }
-
-                const interpretation = selectedCards.map(card => `<strong>${card}:</strong> ${interpretations[card] || "Význam není dostupný."}`).join("<br>");
                 const answer = "Odpověď na vaši otázku je ve vašich rukách. Postupujte s důvěrou a intuicí.";
                 const recommendation = "Doporučujeme důkladně zvážit své kroky a využít získané poznatky.";
 

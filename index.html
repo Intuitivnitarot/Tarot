@@ -70,7 +70,7 @@
         let drawnCards = [];
 
         // Načtení dat ze souboru JSON
-        fetch('./tarot_interpretations.json')
+        fetch('tarot_interpretations.json')
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`Chyba při načítání: ${response.status}`);

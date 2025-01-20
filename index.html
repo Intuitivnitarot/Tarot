@@ -121,12 +121,12 @@
 
         // Generování odpovědi na základě významů
         function generateAnswerAndRecommendation(cards) {
-            const shortAnswer = `Stručný výklad: ${cards[0].reversed_meaning}.`;
-            const mediumAnswer = `Téma otázky: ${cards[0].reversed_meaning}. Doporučený přístup: ${cards[1].reversed_meaning}.`;
+            const shortAnswer = `Stručný výklad: ${cards[0].reversed_meaning}.`;<br>
+            const mediumAnswer = `Téma otázky: ${cards[0].reversed_meaning}.<br> Doporučený přístup: ${cards[1].reversed_meaning}.`;<br>
             const detailedAnswer = `
                 Karty ukazují následující cestu:
-                Hlavní téma: ${cards[0].reversed_meaning}.
-                Klíčový přístup: ${cards[1].reversed_meaning}.
+                Hlavní téma: ${cards[0].reversed_meaning}.<br>
+                Klíčový přístup: ${cards[1].reversed_meaning}.<br>
                 Pravděpodobný výsledek: ${cards[2].reversed_meaning}.
             `;
 

@@ -68,12 +68,13 @@
     <script>
         let tarotDeck = [];
         let drawnCards = [];
+        const defaultCardImage = "Tarot/uobrazekkartyjpg"; // Obecný obrázek
 
         // Načtení dat ze souboru JSON
-        fetch('tarot_interpretations.json')
+        fetch('./tarot_interpretations.json')
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(`Chyba při načítání: ${response.status}`);
+                    throw new Error(`Chyba při načítání: ${response.status} ${response.statusText}`);
                 }
                 return response.json();
             })
@@ -83,6 +84,7 @@
             })
             .catch(error => {
                 console.error("Chyba při načítání dat:", error);
+                alert("Karty se nepodařilo načíst. Zkontrolujte, zda je JSON soubor správný.");
             });
 
         // Funkce pro zamíchání pole
@@ -132,7 +134,8 @@
                 drawnCards.forEach(card => {
                     const cardDiv = document.createElement("div");
                     cardDiv.className = "tarot-card";
-                    cardDiv.style.backgroundImage = `url(${card.image})`; // Nastavení obrázku
+                    // Použití obecného obrázku, pokud karta nemá vlastní
+                    cardDiv.style.backgroundImage = `url(${card.image || defaultCardImage})`;
                     cardDiv.textContent = card.name; // Zobrazíme název karty
                     cardLayout.appendChild(cardDiv);
                 });

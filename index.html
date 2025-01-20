@@ -6,7 +6,7 @@
     <title>Intuitivní Tarot</title>
     <style>
         body {
-            font-family: Verdana, sans-serif;
+            font-family: Arial, sans-serif;
             text-align: center;
             margin: 20px;
         }
@@ -24,15 +24,13 @@
             margin: 0 5px;
             border: 1px solid #ccc;
             border-radius: 8px;
-            background: url('uobrazekkartyjpg') no-repeat center center;
-            background-size: cover;
+            background: #f9f9f9;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
             font-weight: bold;
-            color: white;
-            text-shadow: 1px 1px 2px black;
+            color: #444;
         }
         .hidden {
             display: none;
@@ -70,9 +68,9 @@
         <p id="recommendation"></p>
     </div>
 
-  <script>
-        let tarotDeck = [];
-        let drawnCards = [];
+    <script>
+        let tarotDeck = []; // Proměnná pro načtené karty
+        let drawnCards = []; // Proměnná pro vybrané karty
 
         // Načtení dat ze souboru JSON
         fetch('./tarot_interpretations.json')
@@ -90,6 +88,7 @@
                 console.error("Chyba při načítání dat:", error);
             });
 
+        // Funkce pro zamíchání pole
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -97,12 +96,14 @@
             }
         }
 
+        // Zobrazení animace míchání
         function displayShufflingMessage() {
             const message = document.getElementById("shuffling-message");
             message.classList.remove("hidden");
             setTimeout(() => message.classList.add("hidden"), 2000);
         }
 
+        // Funkce pro zamíchání a výběr karet
         function shuffleAndDrawCards() {
             displayShufflingMessage();
             setTimeout(() => {
@@ -112,8 +113,13 @@
                     return;
                 }
 
-                shuffleArray(tarotDeck);
-                drawnCards = tarotDeck.slice(0, 3);
+                if (tarotDeck.length === 0) {
+                    alert("Karty se nepodařilo načíst. Zkuste obnovit stránku.");
+                    return;
+                }
+
+                shuffleArray(tarotDeck); // Zamíchání balíčku
+                drawnCards = tarotDeck.slice(0, 3); // Vybereme 3 karty
 
                 const cardLayout = document.getElementById("card-layout");
                 cardLayout.innerHTML = "";
@@ -121,10 +127,11 @@
                 drawnCards.forEach(card => {
                     const cardDiv = document.createElement("div");
                     cardDiv.className = "tarot-card";
-                    cardDiv.textContent = card.name;
+                    cardDiv.textContent = card.name; // Zobrazíme název karty
                     cardLayout.appendChild(cardDiv);
                 });
 
+                // Zobrazení interpretací, odpovědi a doporučení
                 const interpretation = drawnCards.map(card => `
                     <strong>${card.name}:</strong> ${card.meaning}
                 `).join("<br>");

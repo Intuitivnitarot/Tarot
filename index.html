@@ -121,9 +121,14 @@
 
         // Generování odpovědi na základě významů
         function generateAnswerAndRecommendation(cards) {
-            const shortAnswer = `Vaše otázka je ovlivněna: ${cards.map(card => card.reversed_meaning).join(", ")}.`;
-            const mediumAnswer = `Doporučený přístup zahrnuje tyto aspekty: ${cards.map(card => card.reversed_meaning).join("; ")}.`;
-            const detailedAnswer = `Vytažené karty naznačují: ${cards.map(card => card.reversed_meaning).join(". ")}. Tyto energie dohromady ukazují cestu, kterou se vydat.`;
+            const shortAnswer = `Hlavní energie: ${cards[0].reversed_meaning}.`;
+            const mediumAnswer = `Téma otázky: ${cards[0].reversed_meaning}. Doporučený přístup: ${cards[1].reversed_meaning}.`;
+            const detailedAnswer = `
+                Karty ukazují následující cestu:
+                Hlavní téma: ${cards[0].reversed_meaning}.
+                Klíčový přístup: ${cards[1].reversed_meaning}.
+                Pravděpodobný výsledek: ${cards[2].reversed_meaning}.
+            `;
 
             return { shortAnswer, mediumAnswer, detailedAnswer };
         }

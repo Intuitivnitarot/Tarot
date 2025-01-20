@@ -16,12 +16,11 @@
         .tarot-row {
             display: flex;
             justify-content: center;
-            margin-bottom: 10px;
+            gap: 10px;
         }
         .tarot-card {
-            width: 80px;
-            height: 140px;
-            margin: 0 5px;
+            width: 100px;
+            height: 150px;
             border: 1px solid #ccc;
             border-radius: 8px;
             background: #f9f9f9;
@@ -49,17 +48,12 @@
     <textarea id="question" rows="3" cols="40" placeholder="Zadejte svou otázku..."></textarea>
     <div id="shuffling-message" class="hidden shuffling">Míchání karet...</div>
     <div class="tarot-container">
-        <div class="tarot-row">
-            <div class="tarot-card">?</div>
-            <div class="tarot-card">?</div>
-            <div class="tarot-card">?</div>
-        </div>
+        <div class="tarot-row" id="card-layout"></div>
     </div>
     <button onclick="shuffleAndDrawCards()">Zamíchat karty</button>
 
     <div id="result" class="hidden">
         <h2>Vaše vytažené karty</h2>
-        <div id="card-layout"></div>
         <h3>Interpretace</h3>
         <p id="interpretation"></p>
         <h3>Odpověď na vaši otázku</h3>
@@ -69,8 +63,8 @@
     </div>
 
     <script>
-        let tarotDeck = []; // Proměnná pro načtené karty
-        let drawnCards = []; // Proměnná pro vybrané karty
+        let tarotDeck = [];
+        let drawnCards = [];
 
         // Načtení dat ze souboru JSON
         fetch('./tarot_interpretations.json')
@@ -101,6 +95,14 @@
             const message = document.getElementById("shuffling-message");
             message.classList.remove("hidden");
             setTimeout(() => message.classList.add("hidden"), 2000);
+        }
+
+        // Generování odpovědi a doporučení na základě vytažených karet
+        function generateAnswerAndRecommendation(cards) {
+            const combinedMeanings = cards.map(card => card.meaning).join(", ");
+            const answer = `Vaše otázka je ovlivněna následujícími energiemi: ${combinedMeanings}.`;
+            const recommendation = `Doporučujeme vzít v úvahu následující aspekty: ${combinedMeanings}.`;
+            return { answer, recommendation };
         }
 
         // Funkce pro zamíchání a výběr karet
@@ -136,8 +138,7 @@
                     <strong>${card.name}:</strong> ${card.meaning}
                 `).join("<br>");
 
-                const answer = "Odpověď na vaši otázku je ve vašich rukách. Postupujte s důvěrou a intuicí.";
-                const recommendation = "Doporučujeme důkladně zvážit své kroky a využít získané poznatky.";
+                const { answer, recommendation } = generateAnswerAndRecommendation(drawnCards);
 
                 document.getElementById("interpretation").innerHTML = interpretation;
                 document.getElementById("answer").innerHTML = answer;

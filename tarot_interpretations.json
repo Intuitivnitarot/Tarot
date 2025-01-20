@@ -2,31 +2,31 @@
   "cards": [
     {
       "name": "Blázen",
-      "number": 0,
+      "number": "0",
       "meaning": "Blázen představuje nový začátek, čistý štít, volnost a důvěru v život. Jeho vak symbolizuje životní zkušenosti, které má vždy s sebou, i když si je možná neuvědomuje. Pes značí instinkt a věrnost.",
       "reversed_meaning": "Význam: Odvaha vykročit do neznáma, přijetí změny, důvěra v proces. Může naznačovat rizika, která přinášejí příležitosti."
 },
 {
      "name": "Mág",
-      "number": I,
+      "number": "I",
       "meaning": "Mág propojuje duchovní a fyzickou rovinu, což znamená, že má moc přeměňovat myšlenky ve skutečnost. Symbol nekonečna naznačuje nekonečné možnosti.",
       "reversed_meaning": "íla manifestace, tvořivost, realizace potenciálu. Ukazuje, že máte vše, co potřebujete k dosažení svých cílů."
 }, 
 {
      "name": "Velekněžka",
-      "number": II,
+      "number": "II",
       "meaning": "Závoj značí tajemství a skrytá moudra. Velekněžka představuje intuici, podvědomí a spojení s vyšším vědomím.",
       "reversed_meaning": "Poslech intuice, duchovní růst, potřeba pochopení skrytých pravd. Je to karta klidu a introspekce."
 },
 {
      "name": "Císařovna",
-      "number": III,
+      "number": "III",
       "meaning": "Císařovna je archetyp matky a symbolizuje hojnost, péči, kreativitu a propojení s přírodou.",
       "reversed_meaning": " Plodnost (doslovná i symbolická), kreativita, láska, růst a harmonie."
 },
 {
      "name": "Císař",
-      "number": IV,
+      "number": "IV",
       "meaning": "Císař je ztělesněním pořádku, stability a struktury. Berani představují sílu a vedení.",
       "reversed_meaning": "Autorita, disciplína, stabilita a pevný základ. Může značit otcovskou postavu nebo potřebu řádu."
 },

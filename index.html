@@ -35,8 +35,8 @@
             padding: 5px;
         }
         button {
-            font-size: 18px;
-            padding: 10px 20px;
+            font-size: 20px;
+            padding: 15px 30px;
             margin: 20px 0;
             background-color: #3aafa9;
             color: white;
@@ -47,11 +47,12 @@
         button:hover {
             background-color: #2b7a78;
         }
-        img {
-            margin: 20px 0;
-            max-width: 150px;
+        .centered-image {
+            margin: 20px auto;
+            max-width: 200px;
             border: 2px solid #ccc;
             border-radius: 8px;
+            display: block;
         }
         .hidden {
             display: none;
@@ -85,9 +86,8 @@
     <h1>Intuitivní Tarot</h1>
     <p>Zadejte svou otázku, zamíchejte karty a objevte svou odpověď.</p>
     <textarea id="question" rows="3" cols="40" placeholder="Zadejte svou otázku..."></textarea>
-    <div id="shuffling-message" class="hidden shuffling">Míchání karet...</div>
     <button onclick="shuffleAndDrawCards()">Zamíchat karty</button>
-    <img src="uobrazekkartyjpg" alt="Obecný obrázek karty" id="general-image">
+    <img src="uobrazekkartyjpg" alt="Obecný obrázek karty" id="general-image" class="centered-image">
     <div class="tarot-container">
         <div class="tarot-row" id="card-layout"></div>
     </div>

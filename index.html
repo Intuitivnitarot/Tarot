@@ -34,26 +34,6 @@
             font-weight: bold;
             padding: 5px;
         }
-        button {
-            font-size: 20px;
-            padding: 15px 30px;
-            margin: 20px 0;
-            background-color: #3aafa9;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #2b7a78;
-        }
-        .centered-image {
-            margin: 20px auto;
-            max-width: 200px;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            display: block;
-        }
         .hidden {
             display: none;
         }
@@ -86,11 +66,11 @@
     <h1>Intuitivní Tarot</h1>
     <p>Zadejte svou otázku, zamíchejte karty a objevte svou odpověď.</p>
     <textarea id="question" rows="3" cols="40" placeholder="Zadejte svou otázku..."></textarea>
-    <button onclick="shuffleAndDrawCards()">Zamíchat karty</button>
-    <img src="uobrazekkartyjpg" alt="Obecný obrázek karty" id="general-image" class="centered-image">
+    <div id="shuffling-message" class="hidden shuffling">Míchání karet...</div>
     <div class="tarot-container">
         <div class="tarot-row" id="card-layout"></div>
     </div>
+    <button onclick="shuffleAndDrawCards()">Zamíchat karty</button>
 
     <div id="result" class="hidden answer-section">
         <h2>Vaše vytažené karty</h2>
@@ -139,6 +119,20 @@
             setTimeout(() => message.classList.add("hidden"), 2000);
         }
 
+        // Generování odpovědi na základě významů
+        function generateAnswerAndRecommendation(cards) {
+            const shortAnswer = `Hlavní energie: ${cards[0].reversed_meaning}.`;
+            const mediumAnswer = `Téma otázky: ${cards[0].reversed_meaning}. Doporučený přístup: ${cards[1].reversed_meaning}.`;
+            const detailedAnswer = `
+                Karty ukazují následující cestu:
+                Hlavní téma: ${cards[0].reversed_meaning}.
+                Klíčový přístup: ${cards[1].reversed_meaning}.
+                Pravděpodobný výsledek: ${cards[2].reversed_meaning}.
+            `;
+
+            return { shortAnswer, mediumAnswer, detailedAnswer };
+        }
+
         // Funkce pro zamíchání a výběr karet
         function shuffleAndDrawCards() {
             displayShufflingMessage();
@@ -167,9 +161,6 @@
                     cardDiv.textContent = card.name; // Zobrazíme název karty
                     cardLayout.appendChild(cardDiv);
                 });
-
-                // Skryjeme obecný obrázek
-                document.getElementById("general-image").style.display = "none";
 
                 // Zobrazení interpretací
                 const interpretation = drawnCards.map(card => `

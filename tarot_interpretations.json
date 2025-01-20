@@ -1,5 +1,42 @@
 {
-    "Blázen": "Blázen symbolizuje nové začátky, potenciál a svobodu.",
+  "cards": [
+    {
+      "name": "Blázen",
+      "number": 0,
+      "meaning": "Blázen představuje nový začátek, čistý štít, volnost a důvěru v život. Jeho vak symbolizuje životní zkušenosti, které má vždy s sebou, i když si je možná neuvědomuje. Pes značí instinkt a věrnost.",
+      "reversed_meaning": "Význam: Odvaha vykročit do neznáma, přijetí změny, důvěra v proces. Může naznačovat rizika, která přinášejí příležitosti."
+},
+{
+     "name": "Mág",
+      "number": I.,
+      "meaning": "Mág propojuje duchovní a fyzickou rovinu, což znamená, že má moc přeměňovat myšlenky ve skutečnost. Symbol nekonečna naznačuje nekonečné možnosti.",
+      "reversed_meaning": "íla manifestace, tvořivost, realizace potenciálu. Ukazuje, že máte vše, co potřebujete k dosažení svých cílů."
+}, 
+{
+     "name": "Velekněžka",
+      "number": II.,
+      "meaning": "Action, the power to manifest",
+      "reversed_meaning": "Manipulation, poor planning, untapped talents"
+},
+{
+     "name": "The Magician",
+      "number": 1,
+      "meaning": "Závoj značí tajemství a skrytá moudra. Velekněžka představuje intuici, podvědomí a spojení s vyšším vědomím.",
+      "reversed_meaning": "Poslech intuice, duchovní růst, potřeba pochopení skrytých pravd. Je to karta klidu a introspekce."
+},
+{
+     "name": "The Magician",
+      "number": 1,
+      "meaning": "Action, the power to manifest",
+      "reversed_meaning": "Manipulation, poor planning, untapped talents"
+},
+{
+     "name": "The Magician",
+      "number": 1,
+      "meaning": "Action, the power to manifest",
+      "reversed_meaning": "Manipulation, poor planning, untapped talents"
+},      
+        
     "Mág": "Mág je karta síly vůle, tvořivosti a schopností.",
     "Velekněžka": "Velekněžka reprezentuje intuici, tajemství a duchovní poznání.",
     "Císařovna": "Císařovna symbolizuje plodnost, tvořivost a hojnost.",
@@ -77,4 +114,6 @@
     "Rytíř pentaklů": "Trpělivost, vytrvalost, spolehlivost.",
     "Královna pentaklů": "Péče, hojnost, praktičnost.",
     "Král pentaklů": "Stabilita, hojnost, vedení."
+    }
+  ]
 }
